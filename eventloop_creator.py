@@ -1,104 +1,81 @@
-import random
 import os
-from random import randint
+import random
 
-with open('./racing_maps.txt') as f:
-    racing_maps = f.read().splitlines()
+"""
+Maps Files
+"""
+RACING_MAPS = './racing_maps.txt'
+ARENA_MAPS = './arena_maps.txt'
+FIGURE_8_MAPS = './figure_8_maps.txt'
 
-with open('./arena_maps.txt') as f:
-    arena_maps = f.read().splitlines()
+"""
+Config
+"""
+CLASS_RESTRICTIONS = ['a', 'b', 'c', 'a', 'b', 'c', 'special']
+FIGURE_8_CLASS_RESTRICTIONS = ['a', 'b', 'c', 'special']
+ARENA_RESTRICTIONS = ['school bus', 'lawn mower', 'bumper car', 'honey pot']
+FIGURE_8_RESTRICTIONS = ['school bus', 'school bus', 'school bus', 'school bus', 'motor home', 'sofa car', 'big rig']
+RACING_RESTRICTIONS = ['school bus', 'school bus', 'school bus', 'school bus', 'school bus', 'school bus', 'school bus', 'school bus', 'motor home', 'sofa car', 'bugzilla', 'big rig']
+LAPS = ['5', '6', '7']
+OUTPUT_FILE = 'output.txt'
 
-with open('./figure_8_maps.txt') as f:
-    figure_8_maps = f.read().splitlines()
+ARENA_THRESHOLD = 70
+FIGURE_8_THRESHOLD = 40
+DEFAULT_BOTS = 0
+RACING_LAPS = 5
+FIGURE_8_LAPS = 12
 
+GAMEMODE_RACING = 'racing'
+GAMEMODE_DERBY = 'derby deathmatch'
 
-class_restrictions = ['a','b','c','a','b','c','special']
-figure_8_class_restrictions = ['a','b','c','special']
-arena_restrictions = ['school bus','lawn mower','bumper car','honey pot']
-figure_8_restrictions = ['school bus','school bus','school bus','school bus','motor home','sofa car','big rig']
-racing_restrictions = ['school bus','school bus','school bus','school bus','school bus','school bus','school bus','school bus','motor home','sofa car','bugzilla','big rig']
-laps = ['5', '6', '7']
-outputFile = 'output.txt'
+def outputRace(z_map, z_class_restriction, z_car_restriction, gamemode, bots, laps=None):
+    with open(OUTPUT_FILE, 'a') as f:
+        f.write(f"el_add={z_map}\n")
+        f.write(f'el_gamemode={gamemode}\n')
+        if gamemode == GAMEMODE_RACING:
+            f.write(f'el_laps={laps}\n')
+        f.write(f'el_bots={bots}\n')
+        f.write(f'el_car_class_restriction={z_class_restriction}\n')
+        f.write(f'el_car_restriction={z_car_restriction}\n')
+        f.write('\n')
 
-if os.path.exists(outputFile):
-    os.remove(outputFile)
-x = 0
-while x <= 100:
-    y = randint(0,100)
+def load_maps(file_path):
+    with open(file_path) as f:
+        return f.read().splitlines()
 
-    if y > 70:
-        z_map = random.choice(arena_maps)
+def select_restrictions(class_restrictions, specific_restrictions):
+    z_class_restriction = random.choice(class_restrictions)
+    z_car_restriction = ''
+    if z_class_restriction == 'special':
+        z_class_restriction = ''
+        z_car_restriction = random.choice(specific_restrictions)
+    return z_class_restriction, z_car_restriction
 
-        z_class_restriction = random.choice(class_restrictions)
-        z_car_restriction = ''
-        if z_class_restriction == 'special':
-            z_class_restriction = ''
-            z_car_restriction = random.choice(arena_restrictions)
-        with open(outputFile, 'a') as f:
-            f.write("el_add=" + z_map + "\n")
-            f.write('el_gamemode=derby deathmatch\n')
-            f.write('el_bots=0\n')
-            f.write('el_car_class_restriction=' + z_class_restriction + "\n")
-            f.write('el_car_restriction=' + z_car_restriction + "\n")
-            f.write('\n')
-        print('el_add='+z_map)
-        print('el_gamemode=derby deathmatch')
-        #print('el_bots=',randint(1,8))
-        print('el_bots=0')
-        print('el_car_class_restriction='+z_class_restriction)
-        print('el_car_restriction='+z_car_restriction)
-        print('')
-    
-    elif y < 40:
-        z_map = random.choice(figure_8_maps)
+def main():
+    if os.path.exists(OUTPUT_FILE):
+        os.remove(OUTPUT_FILE)
 
-        z_class_restriction = random.choice(figure_8_class_restrictions)
-        z_car_restriction = ''
-        if z_class_restriction == 'special':
-            z_class_restriction = ''
-            z_car_restriction = random.choice(figure_8_restrictions)
+    arena_maps = load_maps(ARENA_MAPS)
+    racing_maps = load_maps(RACING_MAPS)
+    figure_8_maps = load_maps(FIGURE_8_MAPS)
 
-        with open(outputFile, 'a') as f:
-            f.write("el_add=" + z_map + "\n")
-            f.write('el_gamemode=racing\n')
-            f.write('el_laps=12\n')
-            f.write('el_bots=0\n')
-            f.write('el_car_class_restriction=' + z_class_restriction + "\n")
-            f.write('el_car_restriction=' + z_car_restriction + "\n")
-            f.write('\n')
-        print("el_add="+z_map)
-        print('el_gamemode=racing')
-        print('el_laps=12')
-        #print('el_bots=',randint(1,8))
-        print('el_bots=0')
-        print('el_car_class_restriction='+z_class_restriction)
-        print('el_car_restriction='+z_car_restriction)
-        print('')
-    
-    else:
-        z_map = random.choice(racing_maps)
+    for _ in range(100):
+        y = random.randint(0, 100)
 
-        z_class_restriction = random.choice(class_restrictions)
-        z_car_restriction = ''
-        if z_class_restriction == 'special':
-            z_class_restriction = ''
-            z_car_restriction = random.choice(racing_restrictions)
-        
-        with open(outputFile, 'a') as f:
-            f.write("el_add=" + z_map + "\n")
-            f.write('el_gamemode=racing\n')
-            f.write('el_laps=5\n')
-            f.write('el_bots=0\n')
-            f.write('el_car_class_restriction=' + z_class_restriction + "\n")
-            f.write('el_car_restriction=' + z_car_restriction + "\n")
-            f.write('\n')
-        print("el_add="+z_map)
-        print('el_gamemode=racing')
-        print('el_laps=5')
-        #print('el_bots=',randint(1,8))
-        print('el_bots=0')
-        print('el_car_class_restriction='+z_class_restriction)
-        print('el_car_restriction='+z_car_restriction)
-        print('')
-        
-    x += 1
+        if y > ARENA_THRESHOLD:
+            z_map = random.choice(arena_maps)
+            z_class_restriction, z_car_restriction = select_restrictions(CLASS_RESTRICTIONS, ARENA_RESTRICTIONS)
+            outputRace(z_map, z_class_restriction, z_car_restriction, GAMEMODE_DERBY, DEFAULT_BOTS)
+
+        elif y < FIGURE_8_THRESHOLD:
+            z_map = random.choice(figure_8_maps)
+            z_class_restriction, z_car_restriction = select_restrictions(FIGURE_8_CLASS_RESTRICTIONS, FIGURE_8_RESTRICTIONS)
+            outputRace(z_map, z_class_restriction, z_car_restriction, GAMEMODE_RACING, DEFAULT_BOTS, FIGURE_8_LAPS)
+
+        else:
+            z_map = random.choice(racing_maps)
+            z_class_restriction, z_car_restriction = select_restrictions(CLASS_RESTRICTIONS, RACING_RESTRICTIONS)
+            outputRace(z_map, z_class_restriction, z_car_restriction, GAMEMODE_RACING, DEFAULT_BOTS, RACING_LAPS)
+
+if __name__ == "__main__":
+    main()
