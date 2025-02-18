@@ -14,9 +14,8 @@ Config
 CLASS_RESTRICTIONS = ['a', 'b', 'c', 'a', 'b', 'c', 'special']
 FIGURE_8_CLASS_RESTRICTIONS = ['a', 'b', 'c', 'special']
 ARENA_RESTRICTIONS = ['school bus', 'lawn mower', 'bumper car', 'honey pot']
-FIGURE_8_RESTRICTIONS = ['school bus', 'school bus', 'school bus', 'school bus', 'motor home', 'sofa car', 'big rig']
-RACING_RESTRICTIONS = ['school bus', 'school bus', 'school bus', 'school bus', 'school bus', 'school bus', 'school bus', 'school bus', 'motor home', 'sofa car', 'bugzilla', 'big rig']
-LAPS = ['5', '6', '7']
+FIGURE_8_RESTRICTIONS = ['school bus'] * 4 + ['motor home', 'sofa car', 'big rig']
+RACING_RESTRICTIONS = ['school bus'] * 8 + ['motor home', 'sofa car', 'bugzilla', 'big rig']
 OUTPUT_FILE = 'output.txt'
 
 ARENA_THRESHOLD = 70
