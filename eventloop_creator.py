@@ -11,7 +11,7 @@ FIGURE_8_MAPS = './figure_8_maps.txt'
 """
 Config
 """
-CLASS_RESTRICTIONS = ['a', 'b', 'c', 'a', 'b', 'c', 'special']
+CLASS_RESTRICTIONS = ['a', 'b', 'c'] * 2 + ['special']
 FIGURE_8_CLASS_RESTRICTIONS = ['a', 'b', 'c', 'special']
 ARENA_RESTRICTIONS = ['school bus', 'lawn mower', 'bumper car', 'honey pot']
 FIGURE_8_RESTRICTIONS = ['school bus'] * 4 + ['motor home', 'sofa car', 'big rig']
